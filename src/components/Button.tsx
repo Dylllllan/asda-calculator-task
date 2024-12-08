@@ -7,9 +7,10 @@ type Props = {
     accent?: boolean;
     highlight?: boolean;
     columnSpan?: number;
+    accessibilityLabel?: string;
 }
 
-export function Button({ onClick, children, accent = false, highlight = false, columnSpan = 1 }: Props) {
+export function Button({ onClick, children, accent = false, highlight = false, columnSpan = 1, accessibilityLabel }: Props) {
     return (
         <button
             className={classNames(styles.Button, {
@@ -18,6 +19,7 @@ export function Button({ onClick, children, accent = false, highlight = false, c
             })}
             style={{ gridColumn: `span ${columnSpan}` }}
             onClick={onClick}
+            aria-label={accessibilityLabel}
         >
             {children}
         </button>

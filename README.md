@@ -17,4 +17,3 @@
 
 - When the next operator is pressed, the previous operation is executed and the result is displayed. This causes issues when chaining operations together where the precedence of operators matters. For example, `1 + 2 * 3` results in `9` instead of `7`.
 - The calculator app does not support keyboard input.
-- The calculator app has no accessibility features.

@@ -115,9 +115,9 @@ export function Calculator() {
         <div className={styles.Calculator}>
             <Display accumulator={accumulator} operand={operand} state={state} />
             <div className={styles.ButtonGrid}>
-                <Button onClick={() => onClear()}>C</Button>
-                <Button onClick={() => onClearEntry()}>CE</Button>
-                <Button onClick={() => onToggleSign()}>±</Button>
+                <Button onClick={() => onClear()} accessibilityLabel="Clear">C</Button>
+                <Button onClick={() => onClearEntry()} accessibilityLabel="Clear entry">CE</Button>
+                <Button onClick={() => onToggleSign()} accessibilityLabel="Toggle sign">±</Button>
                 {buildOperatorButton(Operator.DIVISION)}
                 {buildDigitButtons([7, 8, 9])}
                 {buildOperatorButton(Operator.MULTIPLICATION)}
@@ -126,7 +126,7 @@ export function Calculator() {
                 {buildDigitButtons([1, 2, 3])}
                 {buildOperatorButton(Operator.ADDITION)}
                 <DigitButton value={0} onClick={() => onDigitInput(0)} columnSpan={3} />
-                <Button onClick={() => onExecute()}>=</Button>
+                <Button onClick={() => onExecute()} accessibilityLabel="Equals">=</Button>
             </div>
         </div>
     )

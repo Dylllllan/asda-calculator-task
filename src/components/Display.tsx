@@ -9,7 +9,7 @@ type Props = {
 
 export function Display({ accumulator, operand, state }: Props) {
     return (
-        <div className={styles.Display}>{
+        <div className={styles.Display} aria-live="polite">{
             state === CalculatorState.ERROR ? "ERROR" :
             state === CalculatorState.OPERAND ? operand :
             accumulator

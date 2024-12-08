@@ -14,9 +14,17 @@ const operatorSymbols: Record<Operator, string> = {
     [Operator.DIVISION]: "÷"
 }
 
+const operatorAccessibilityLabels: Record<Operator, string> = {
+    [Operator.ADDITION]: "Add",
+    [Operator.SUBTRACTION]: "Subtract",
+    [Operator.MULTIPLICATION]: "Multiply",
+    [Operator.DIVISION]: "Divide"
+}
+
 export function OperatorButton({ operator, onClick, highlight }: Props) {
     return (
-        <Button onClick={onClick} accent highlight={highlight}>
+        <Button onClick={onClick} accent highlight={highlight}
+            accessibilityLabel={operatorAccessibilityLabels[operator]}>
             {operatorSymbols[operator]}
         </Button>
     )
