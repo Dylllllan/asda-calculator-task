@@ -126,7 +126,7 @@ export function Calculator() {
                 {buildDigitButtons([1, 2, 3])}
                 {buildOperatorButton(Operator.ADDITION)}
                 <DigitButton value={0} onClick={() => onDigitInput(0)} columnSpan={3} />
-                <Button onClick={() => onExecute()} accessibilityLabel="Equals">=</Button>
+                <Button onClick={() => onExecute()} accent accessibilityLabel="Equals">=</Button>
             </div>
         </div>
     )
