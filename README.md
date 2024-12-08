@@ -9,7 +9,7 @@
 
 ## Assumptions
 
-- Assumes that, since the calculator only supports integer arithmetic, division should round down to the nearest integer.
+- Assumes that, since the calculator only supports integer arithmetic, division should be [truncated](https://stackoverflow.com/a/19519244) to the nearest integer.
 - Assumes that the behaviour of the calculator app should be similar to the iPhone calculator app, except for operator precedence.
 
 ## Limitations
@@ -18,4 +18,4 @@
     - This causes issues when chaining operations together where the precedence of operators matters. For example, `1 + 2 * 3` results in `9` instead of `7`.
     - Overcoming this limitation has been explored in the `Operator-precedence` branch.
 - The calculator app does not support keyboard input.
-- There are no unit or integration tests for the calculator app.
+- There are no tests for the components or end-to-end integration tests for the calculator app.

@@ -13,7 +13,8 @@ export function executeOperation(accumulator: number, operator: Operator, operan
                 throw new Error("Division by zero");
             }
             // Integer division
-            return Math.floor(accumulator / operand);
+            const result = accumulator / operand;
+            return result > 0 ? Math.floor(result) : Math.ceil(result);
         default:
             throw new Error("Invalid operator");
     }

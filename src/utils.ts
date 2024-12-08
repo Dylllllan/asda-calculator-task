@@ -1,5 +1,8 @@
-export function addDigit(accumulator: number, digit: number): number {
-    return accumulator * 10 + digit;
+export function addDigit(number: number, digit: number): number {
+    if (number < 0) {
+        return number * 10 - digit;
+    }
+    return number * 10 + digit;
 }
 
 export function getDisplayNumber(number: number): string {
