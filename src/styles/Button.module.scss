@@ -1,0 +1,19 @@
+
+.Button {
+    background-color: #E0E0E0;
+    padding: 15px;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 1.2rem;
+    color: #000000;
+}
+
+.AccentButton {
+    @extend .Button;
+
+    background-color: #538316;
+    color: #FFFFFF;
+}

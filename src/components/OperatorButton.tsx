@@ -1,20 +1,23 @@
-import styles from "../styles/Calculator.module.scss";
+import { Operator } from "../const";
+import { Button } from "./Button";
 
 type Props = {
-    value: string;
+    operator: Operator;
     onClick: () => void;
     columnSpan?: number;
-    accent?: boolean;
 }
 
-export function OperatorButton({ value, onClick, columnSpan = 1, accent = false }: Props) {
+const operatorSymbols: Record<Operator, string> = {
+    [Operator.ADDITION]: "+",
+    [Operator.SUBTRACTION]: "-",
+    [Operator.MULTIPLICATION]: "×",
+    [Operator.DIVISION]: "÷"
+}
+
+export function OperatorButton({ operator, onClick, columnSpan = 1 }: Props) {
     return (
-        <button
-            className={accent ? styles.AccentButton : styles.Button}
-            onClick={onClick}
-            style={{ gridColumn: `span ${columnSpan}` }}
-        >
-            {value}
-        </button>
+        <Button onClick={onClick} columnSpan={columnSpan} accent>
+            {operatorSymbols[operator]}
+        </Button>
     )
 }

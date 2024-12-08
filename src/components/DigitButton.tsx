@@ -1,4 +1,4 @@
-import styles from "../styles/Calculator.module.scss";
+import { Button } from "./Button";
 
 type Props = {
     value: number;
@@ -8,8 +8,8 @@ type Props = {
 
 export function DigitButton({ value, onClick, columnSpan = 1 }: Props) {
     return (
-        <button className={styles.Button} onClick={onClick} style={{ gridColumn: `span ${columnSpan}` }}>
+        <Button onClick={onClick} columnSpan={columnSpan}>
             {value}
-        </button>
+        </Button>
     )
 }

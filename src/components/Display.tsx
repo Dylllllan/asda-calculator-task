@@ -1,12 +1,18 @@
+import { CalculatorState } from "../const";
 import styles from "../styles/Calculator.module.scss";
 
 type Props = {
-    value: number;
-    error?: boolean;
+    accumulator: number;
+    operand: number | null;
+    state: CalculatorState;
 }
 
-export function Display({ value, error = false }: Props) {
+export function Display({ accumulator, operand, state }: Props) {
     return (
-        <div className={styles.Display}>{error ? "ERROR" : value}</div>
+        <div className={styles.Display}>{
+            state === CalculatorState.ERROR ? "ERROR" :
+            state === CalculatorState.OPERAND ? operand :
+            accumulator
+        }</div>
     )
 }
