@@ -1,4 +1,5 @@
 export enum Operator {
+    NONE = '',
     ADDITION = '+',
     SUBTRACTION = '-',
     MULTIPLICATION = '*',
@@ -9,5 +10,6 @@ export enum CalculatorState {
     ACCUMULATOR,
     OPERATOR,
     OPERAND,
+    RESULT,
     ERROR
 };

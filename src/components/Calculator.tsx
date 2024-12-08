@@ -1,21 +1,22 @@
-import { Display } from "./Display";
-
+import { useState } from "react";
 import styles from "../styles/Calculator.module.scss";
+
+import { Display } from "./Display";
 import { DigitButton } from "./DigitButton";
 import { OperatorButton } from "./OperatorButton";
-import { useState } from "react";
-import { CalculatorState, Operator } from "../types";
-import { addDigit } from "../utils";
 import { Button } from "./Button";
+
+import { CalculatorState, Operator } from "../types";
 import { executeOperation } from "../calculation";
+import { addDigit } from "../utils";
 
 export function Calculator() {
     const [state, setState] = useState<CalculatorState>(CalculatorState.ACCUMULATOR);
 
     const [accumulator, setAccumulator] = useState<number>(0);
 
-    const [operator, setOperator] = useState<Operator | null>(null);
-    const [operand, setOperand] = useState<number | null>(null);
+    const [operator, setOperator] = useState<Operator>(Operator.NONE);
+    const [operand, setOperand] = useState<number>(0);
 
     const onDigitInput = (digit: number) => {
         switch (state) {
@@ -27,7 +28,11 @@ export function Calculator() {
                 setOperand(digit);
                 break;
             case CalculatorState.OPERAND:
-                setOperand(operand => operand ? addDigit(operand, digit) : digit);
+                setOperand(operand => addDigit(operand, digit));
+                break;
+            case CalculatorState.RESULT:
+                setState(CalculatorState.ACCUMULATOR);
+                setAccumulator(digit);
                 break;
         }
     }
@@ -35,24 +40,21 @@ export function Calculator() {
     const onOperatorInput = (op: Operator) => {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
-            case CalculatorState.OPERATOR:
-                setOperator(op);
+            case CalculatorState.RESULT:
                 setOperand(accumulator);
                 break;
             case CalculatorState.OPERAND:
                 // Execute and clear the current operation
-                onExecute(true);
-
-                setOperator(op);
-                setOperand(accumulator);
+                onExecute(true);         
                 break;
         }
 
+        setOperator(op);
         setState(CalculatorState.OPERATOR);
     }
 
     const onExecute = (clearOperation = false) => {
-        if (operator === null || operand === null) {
+        if (operator === Operator.NONE) {
             return;
         }
 
@@ -60,12 +62,12 @@ export function Calculator() {
             const result = executeOperation(accumulator, operator, operand);
 
             if (clearOperation) {
-                setOperator(null);
-                setOperand(null);
+                setOperator(Operator.NONE);
+                setOperand(0);
             }
     
             setAccumulator(result);
-            setState(CalculatorState.ACCUMULATOR);
+            setState(CalculatorState.RESULT);
         } catch {
             setState(CalculatorState.ERROR);
         }
@@ -75,6 +77,7 @@ export function Calculator() {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
             case CalculatorState.OPERATOR:
+            case CalculatorState.RESULT:
                 setAccumulator(0);
                 setState(CalculatorState.ACCUMULATOR);
                 break;
@@ -86,8 +89,8 @@ export function Calculator() {
 
     const onClear = () => {
         setAccumulator(0);
-        setOperator(null);
-        setOperand(null);
+        setOperator(Operator.NONE);
+        setOperand(0);
         setState(CalculatorState.ACCUMULATOR);
     }
 
@@ -95,11 +98,12 @@ export function Calculator() {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
             case CalculatorState.OPERATOR:
+            case CalculatorState.RESULT:
                 setAccumulator(accumulator => -accumulator);
                 setState(CalculatorState.ACCUMULATOR);
                 break;
             case CalculatorState.OPERAND:
-                setOperand(operand => operand ? -operand : 0);
+                setOperand(operand => -operand);
                 break;
         }
     }

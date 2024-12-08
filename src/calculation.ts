@@ -14,5 +14,7 @@ export function executeOperation(accumulator: number, operator: Operator, operan
             }
             // Integer division
             return Math.floor(accumulator / operand);
+        default:
+            throw new Error("Invalid operator");
     }
 }
