@@ -4,18 +4,20 @@ import styles from "../styles/Calculator.module.scss";
 import { DigitButton } from "./DigitButton";
 import { OperatorButton } from "./OperatorButton";
 import { useState } from "react";
-import { CalculatorState, Operator } from "../types";
+import { CalculatorState, Operation, Operator } from "../types";
 import { addDigit } from "../utils";
 import { Button } from "./Button";
-import { executeOperation } from "../calculation";
+import { executeOperations, getIntermediateResult } from "../calculation";
 
 export function Calculator() {
     const [state, setState] = useState<CalculatorState>(CalculatorState.ACCUMULATOR);
 
     const [accumulator, setAccumulator] = useState<number>(0);
 
-    const [operator, setOperator] = useState<Operator | null>(null);
-    const [operand, setOperand] = useState<number | null>(null);
+    const [operator, setOperator] = useState<Operator>(Operator.NONE);
+    const [operand, setOperand] = useState<number>(0);
+
+    const [operations, setOperations] = useState<Operation[]>([]);
 
     const onDigitInput = (digit: number) => {
         switch (state) {
@@ -23,11 +25,16 @@ export function Calculator() {
                 setAccumulator(accumulator => addDigit(accumulator, digit));
                 break;
             case CalculatorState.OPERATOR:
-                setState(CalculatorState.OPERAND);
                 setOperand(digit);
+                setState(CalculatorState.OPERAND);
                 break;
             case CalculatorState.OPERAND:
-                setOperand(operand => operand ? addDigit(operand, digit) : digit);
+                setOperand(operand => addDigit(operand, digit));
+                break;
+            case CalculatorState.RESULT:
+                setAccumulator(digit);
+                setOperations([]);
+                setState(CalculatorState.ACCUMULATOR);
                 break;
         }
     }
@@ -35,71 +42,84 @@ export function Calculator() {
     const onOperatorInput = (op: Operator) => {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
+                setOperations(operations => [...operations, { number: accumulator, operator: Operator.NONE }]);
+                break;
             case CalculatorState.OPERATOR:
                 setOperator(op);
-                setOperand(accumulator);
                 break;
             case CalculatorState.OPERAND:
-                // Execute and clear the current operation
-                onExecute(true);
+                if (operator === Operator.DIVISION && operand === 0) {
+                    setState(CalculatorState.ERROR);
+                    return;
+                }
 
-                setOperator(op);
-                setOperand(accumulator);
+                setOperations(operations => [...operations, { number: operand, operator: operator }]);
                 break;
+            case CalculatorState.RESULT:
+                // The result is already in the operations array
         }
 
+        setOperator(op);
         setState(CalculatorState.OPERATOR);
     }
 
-    const onExecute = (clearOperation = false) => {
-        if (operator === null || operand === null) {
-            return;
-        }
+    const onExecute = () => {
+        // Use the intermediate result as the operand if operator is pressed before executing
+        const number = state === CalculatorState.OPERATOR ? getIntermediateResult(operations, operator) : operand;
+        setOperand(number);
 
-        try {
-            const result = executeOperation(accumulator, operator, operand);
+        const result = executeOperations([...operations, { number, operator }]);
 
-            if (clearOperation) {
-                setOperator(null);
-                setOperand(null);
-            }
-    
-            setAccumulator(result);
-            setState(CalculatorState.ACCUMULATOR);
-        } catch {
-            setState(CalculatorState.ERROR);
-        }
+        setAccumulator(result);
+        setOperations([{ number: result, operator: Operator.NONE }]);
+        setState(CalculatorState.RESULT);
     }
 
     const onClearEntry = () => {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
-            case CalculatorState.OPERATOR:
                 setAccumulator(0);
-                setState(CalculatorState.ACCUMULATOR);
+                break;
+            case CalculatorState.OPERATOR:
+                setState(operations.length > 1 ? CalculatorState.OPERAND : CalculatorState.ACCUMULATOR);
+
+                // Remove the last operation added
+                if (operations.length > 0) {
+                    const lastOperation = operations[operations.length - 1];
+                    setOperations(operations => operations.slice(0, -1));
+
+                    setOperator(lastOperation.operator);
+                }
                 break;
             case CalculatorState.OPERAND:
                 setOperand(0);
+                break;
+            case CalculatorState.RESULT:
+                setAccumulator(0);
+                setState(CalculatorState.ACCUMULATOR);
                 break;
         }
     }
 
     const onClear = () => {
         setAccumulator(0);
-        setOperator(null);
-        setOperand(null);
+        setOperator(Operator.NONE);
+        setOperand(0);
         setState(CalculatorState.ACCUMULATOR);
+        setOperations([]);
     }
 
     const onToggleSign = () => {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
-            case CalculatorState.OPERATOR:
                 setAccumulator(accumulator => -accumulator);
-                setState(CalculatorState.ACCUMULATOR);
+                break;
+            case CalculatorState.OPERATOR:
+                setState(CalculatorState.OPERAND);
+                setOperand(0);
                 break;
             case CalculatorState.OPERAND:
-                setOperand(operand => operand ? -operand : 0);
+                setOperand(operand => -operand);
                 break;
         }
     }
@@ -109,12 +129,12 @@ export function Calculator() {
             highlight={state == CalculatorState.OPERATOR && operator == op} />
     }
     const buildDigitButtons = (digits: number[]) => {
-        return digits.map(digit => <DigitButton value={digit} onClick={() => onDigitInput(digit)} />)
+        return digits.map(digit => <DigitButton key={digit} value={digit} onClick={() => onDigitInput(digit)} />)
     }
 
     return (
         <div className={styles.Calculator}>
-            <Display accumulator={accumulator} operand={operand} state={state} />
+            <Display accumulator={accumulator} operand={operand} result={getIntermediateResult(operations, operator)} state={state} />
             <div className={styles.ButtonGrid}>
                 <Button onClick={() => onClear()} accessibilityLabel="Clear">C</Button>
                 <Button onClick={() => onClearEntry()} accessibilityLabel="Clear entry">CE</Button>

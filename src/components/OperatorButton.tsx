@@ -8,6 +8,7 @@ type Props = {
 }
 
 const operatorSymbols: Record<Operator, string> = {
+    [Operator.NONE]: "",
     [Operator.ADDITION]: "+",
     [Operator.SUBTRACTION]: "-",
     [Operator.MULTIPLICATION]: "×",
@@ -15,6 +16,7 @@ const operatorSymbols: Record<Operator, string> = {
 }
 
 const operatorAccessibilityLabels: Record<Operator, string> = {
+    [Operator.NONE]: "",
     [Operator.ADDITION]: "Add",
     [Operator.SUBTRACTION]: "Subtract",
     [Operator.MULTIPLICATION]: "Multiply",
