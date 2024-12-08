@@ -16,6 +16,6 @@
 
 - The calculator app does not support operator precedence. When the next operator is pressed, the previous operation is executed and the result is displayed.
     - This causes issues when chaining operations together where the precedence of operators matters. For example, `1 + 2 * 3` results in `9` instead of `7`.
-    - Overcoming this limitation has been explored in the `Operator-precedence` branch.
+    - Overcoming this limitation was explored, but was not implemented to avoid bloating the solution with complex logic.
 - The calculator app does not support keyboard input.
-- There are no tests for the components or end-to-end integration tests for the calculator app.
+- Unit and component tests were written after the implementation of the calculator app, rather than taking a test-driven development approach.

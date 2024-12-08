@@ -102,12 +102,14 @@ export function Calculator() {
         switch (state) {
             case CalculatorState.ACCUMULATOR:
             case CalculatorState.OPERATOR:
-            case CalculatorState.RESULT:
                 setAccumulator(accumulator => -accumulator);
                 setState(CalculatorState.ACCUMULATOR);
                 break;
             case CalculatorState.OPERAND:
                 setOperand(operand => -operand);
+                break;
+            case CalculatorState.RESULT:
+                setAccumulator(accumulator => -accumulator);
                 break;
         }
     }
