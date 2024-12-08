@@ -1,0 +1,59 @@
+.Calculator {
+    width: 100%;
+    max-width: 350px;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background-color: #FFFFFF;
+    border-radius: 12px;
+
+    @media (max-width: 375px) {
+        width: 95%;
+        padding: 15px;
+    }
+}
+
+.Display {
+    width: 100%;
+    height: 80px;
+
+    background-color: #F0F0F0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 0 15px;
+    box-sizing: border-box;
+
+    font-size: 2rem;
+    color: #000000;
+}
+
+.ButtonGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.Button {
+    background-color: #E0E0E0;
+    padding: 15px;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 1.2rem;
+    color: #000000;
+}
+
+.AccentButton {
+    @extend .Button;
+
+    background-color: #538316;
+    color: #FFFFFF;
+}
