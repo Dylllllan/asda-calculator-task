@@ -44,11 +44,12 @@ export function Calculator() {
                 setOperand(accumulator);
                 break;
             case CalculatorState.OPERAND:
-                if (!onExecute()) {
+                const result = onExecute();
+                if (!result) {
                     return;
                 }
-                // Clear the operand
-                setOperand(0);
+                // Set the operand to the result
+                setOperand(result);
                 break;
             case CalculatorState.ERROR:
                 // Do nothing
@@ -61,7 +62,7 @@ export function Calculator() {
 
     const onExecute = () => {
         if (operator === Operator.NONE) {
-            return false;
+            return null;
         }
 
         try {
@@ -69,10 +70,10 @@ export function Calculator() {
             setAccumulator(result);
             setState(CalculatorState.RESULT);
 
-            return true;
+            return result;
         } catch {
             setState(CalculatorState.ERROR);
-            return false;
+            return null;
         }
     }
 
