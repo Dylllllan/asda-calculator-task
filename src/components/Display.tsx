@@ -1,4 +1,4 @@
-import { CalculatorState } from "../const";
+import { CalculatorState } from "../types";
 import styles from "../styles/Calculator.module.scss";
 import { getDisplayNumber } from "../utils";
 
