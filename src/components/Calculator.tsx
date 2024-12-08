@@ -100,6 +100,14 @@ export function Calculator() {
         }
     }
 
+    const buildOperatorButton = (op: Operator) => {
+        return <OperatorButton operator={op} onClick={() => onOperatorInput(op)}
+            highlight={state == CalculatorState.OPERATOR && operator == op} />
+    }
+    const buildDigitButtons = (digits: number[]) => {
+        return digits.map(digit => <DigitButton value={digit} onClick={() => onDigitInput(digit)} />)
+    }
+
     return (
         <div className={styles.Calculator}>
             <Display accumulator={accumulator} operand={operand} state={state} />
@@ -107,19 +115,13 @@ export function Calculator() {
                 <Button onClick={() => onClear()}>C</Button>
                 <Button onClick={() => onClearEntry()}>CE</Button>
                 <Button onClick={() => onToggleSign()}>±</Button>
-                <OperatorButton operator={Operator.DIVISION} onClick={() => onOperatorInput(Operator.DIVISION)} />
-                <DigitButton value={7} onClick={() => onDigitInput(7)} />
-                <DigitButton value={8} onClick={() => onDigitInput(8)} />
-                <DigitButton value={9} onClick={() => onDigitInput(9)} />
-                <OperatorButton operator={Operator.MULTIPLICATION} onClick={() => onOperatorInput(Operator.MULTIPLICATION)} />
-                <DigitButton value={4} onClick={() => onDigitInput(4)} />
-                <DigitButton value={5} onClick={() => onDigitInput(5)} />
-                <DigitButton value={6} onClick={() => onDigitInput(6)} />
-                <OperatorButton operator={Operator.SUBTRACTION} onClick={() => onOperatorInput(Operator.SUBTRACTION)} />
-                <DigitButton value={1} onClick={() => onDigitInput(1)} />
-                <DigitButton value={2} onClick={() => onDigitInput(2)} />
-                <DigitButton value={3} onClick={() => onDigitInput(3)} />
-                <OperatorButton operator={Operator.ADDITION} onClick={() => onOperatorInput(Operator.ADDITION)} />
+                {buildOperatorButton(Operator.DIVISION)}
+                {buildDigitButtons([7, 8, 9])}
+                {buildOperatorButton(Operator.MULTIPLICATION)}
+                {buildDigitButtons([4, 5, 6])}
+                {buildOperatorButton(Operator.SUBTRACTION)}
+                {buildDigitButtons([1, 2, 3])}
+                {buildOperatorButton(Operator.ADDITION)}
                 <DigitButton value={0} onClick={() => onDigitInput(0)} columnSpan={3} />
                 <Button onClick={() => onExecute()}>=</Button>
             </div>

@@ -4,7 +4,7 @@ import { Button } from "./Button";
 type Props = {
     operator: Operator;
     onClick: () => void;
-    columnSpan?: number;
+    highlight?: boolean;
 }
 
 const operatorSymbols: Record<Operator, string> = {
@@ -14,9 +14,9 @@ const operatorSymbols: Record<Operator, string> = {
     [Operator.DIVISION]: "÷"
 }
 
-export function OperatorButton({ operator, onClick, columnSpan = 1 }: Props) {
+export function OperatorButton({ operator, onClick, highlight }: Props) {
     return (
-        <Button onClick={onClick} columnSpan={columnSpan} accent>
+        <Button onClick={onClick} accent highlight={highlight}>
             {operatorSymbols[operator]}
         </Button>
     )

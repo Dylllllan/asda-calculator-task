@@ -11,9 +11,11 @@
     color: #000000;
 }
 
-.AccentButton {
-    @extend .Button;
-
+.Accent {
     background-color: #538316;
     color: #FFFFFF;
+}
+
+.AccentHighlight {
+    background-color: #3F5E0E;
 }
