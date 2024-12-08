@@ -1,5 +1,6 @@
 import { CalculatorState } from "../const";
 import styles from "../styles/Calculator.module.scss";
+import { getDisplayNumber } from "../utils";
 
 type Props = {
     accumulator: number;
@@ -8,11 +9,11 @@ type Props = {
 }
 
 export function Display({ accumulator, operand, state }: Props) {
+    const number = state === CalculatorState.OPERAND && operand != null ? operand : accumulator;
+
     return (
         <div className={styles.Display} aria-live="polite">{
-            state === CalculatorState.ERROR ? "ERROR" :
-            state === CalculatorState.OPERAND ? operand :
-            accumulator
+            state === CalculatorState.ERROR ? "ERROR" : getDisplayNumber(number)
         }</div>
     )
 }
