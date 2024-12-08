@@ -36,11 +36,14 @@ export function Calculator() {
             case CalculatorState.ACCUMULATOR:
             case CalculatorState.OPERATOR:
                 setOperator(op);
+                setOperand(accumulator);
                 break;
             case CalculatorState.OPERAND:
                 // Execute and clear the current operation
                 onExecute(true);
+
                 setOperator(op);
+                setOperand(accumulator);
                 break;
         }
 
