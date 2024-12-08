@@ -4,9 +4,10 @@ import styles from "../styles/Calculator.module.scss";
 import { DigitButton } from "./DigitButton";
 import { OperatorButton } from "./OperatorButton";
 import { useState } from "react";
-import { CalculatorState, Operator } from "../const";
-import { addDigit, executeOperation } from "../utils";
+import { CalculatorState, Operator } from "../types";
+import { addDigit } from "../utils";
 import { Button } from "./Button";
+import { executeOperation } from "../calculation";
 
 export function Calculator() {
     const [state, setState] = useState<CalculatorState>(CalculatorState.ACCUMULATOR);

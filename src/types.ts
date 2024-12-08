@@ -11,3 +11,8 @@ export enum CalculatorState {
     OPERAND,
     ERROR
 };
+
+export interface Operation {
+    number: number;
+    operator?: Operator;
+}
